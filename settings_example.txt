@@ -1,0 +1,8 @@
+settings = {
+    'base_url': '',
+    'telegram_token': '',
+    'number': '',
+    'whatsapp': {
+        'url': 'https://web.whatsapp.com/'
+    }
+}
