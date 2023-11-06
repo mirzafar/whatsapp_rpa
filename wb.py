@@ -3,7 +3,7 @@ import asyncio
 import httpx
 
 from driver import ClientDriver
-from settings import settings
+from settingsq import settings
 
 
 async def main():
