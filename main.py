@@ -2,7 +2,7 @@ import asyncio
 
 import httpx
 
-from driver import ClientDriver
+from client import ClientDriver
 from settings import settings
 
 
