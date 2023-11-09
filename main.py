@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 
 import httpx
 
@@ -12,6 +13,7 @@ async def main():
     # open whatsapp and send pin code to telegram
     flag = await driver_client.activate_whatsapp()
 
+    error_count, error_time, error_name = 0, None, None
     while flag:
         try:
             async with httpx.AsyncClient() as session:
@@ -38,23 +40,37 @@ async def main():
                             send_ids.append(message['id'])
 
                         except (Exception,) as e:
-                            print(f'main$session() -> error: {str(e)}')
+                            error_name = str(e)
                             flag = False
-                            await driver_client.send_message(f'main$session() -> error: {str(e)}')
+                            print(f'main$session() -> error: {str(e)}')
+
                             break
+
                 if send_ids:
                     print(await session.get(url, params={
                         'action': 'set_as_sent',
                         'item_ids': send_ids
                     }))
 
-                if flag is False:
-                    await main()
-
         except (Exception,) as e:
+            error_name = str(e)
+            flag = False
             print(f'main() -> error: {str(e)}')
-            await driver_client.send_message(f'main() -> error: {str(e)}')
-            await main()
+
+        if flag is False:
+            await driver_client.send_message(f'main() -> error: {error_name}')
+            print(f'error_count: {error_count}')
+            if error_count > 8:
+                raise ConnectionError()
+            elif error_count > 5:
+                await main()
+            else:
+                flag = True
+                if error_time and int((datetime.now() - error_time).total_seconds() / 60) > 10:
+                    error_count = 0
+                else:
+                    error_count += 1
+                    error_time = datetime.now()
 
 
 if __name__ == '__main__':

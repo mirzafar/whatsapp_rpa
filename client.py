@@ -64,12 +64,12 @@ class ClientDriver:
                         if len(chunk.text) == 1:
                             pin_code += chunk.text
 
-                await asyncio.sleep(10)
+                await asyncio.sleep(5)
 
                 success = await self.send_message(pin_code)
                 print(f'ClientDriver$take_screenshot_and_send() -> success: {success}')
                 if success:
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(180)
 
                 return success
 
