@@ -86,9 +86,6 @@ class ClientDriver:
         await asyncio.sleep(4)
 
     def validate_phone(self, number) -> Tuple[bool, str]:
-        if number and number in ['77021557436']:
-            number = '+77087905946'
-
         if number and number.startswith('77') and len(number) == 11:
             return True, f'+{number}'
         elif number and number.startswith('87') and len(number) == 11:
@@ -102,7 +99,7 @@ class ClientDriver:
     async def send_message(self, text) -> bool:
         url = f'https://api.telegram.org/bot{settings["telegram_token"]}/sendMessage'
         payload = {
-            'chat_id': '702160070',
+            'chat_id': settings['tg_id'],
             'text': text,
         }
         try:

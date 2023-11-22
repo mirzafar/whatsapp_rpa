@@ -5,4 +5,5 @@ settings = {
     'whatsapp': {
         'url': 'https://web.whatsapp.com/'
     }
+    'tg_id': '',
 }
