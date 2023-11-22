@@ -1,6 +1,7 @@
 import asyncio
 from typing import Tuple
 
+import aiofiles
 import httpx
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -114,3 +115,14 @@ class ClientDriver:
             print(f'send_pin_code() -> error: {e}')
 
         return False
+
+    async def validate_message(self, text):
+        try:
+            async with aiofiles.open('text.txt', 'w') as file:
+                await file.write(text)
+
+            async with aiofiles.open('text.txt', 'r') as file:
+                return await file.read()
+
+        except (Exception,) as e:
+            return None

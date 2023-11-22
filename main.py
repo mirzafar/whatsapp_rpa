@@ -24,15 +24,16 @@ async def main():
                 send_ids = []
                 for message in (messages.get('items') or []):
                     _, phone = driver_client.validate_phone(message.get('phone'))
+                    text = await driver_client.validate_message(message.get('message'))
                     if all([
                         phone,
-                        message.get('message'),
+                        text,
                         message.get('id'),
                     ]):
                         try:
                             # open chat client and write text
                             await driver_client.open_url(
-                                f'{settings["whatsapp"]["url"]}send?phone={phone}&text={message["message"]}', 10
+                                f'{settings["whatsapp"]["url"]}send?phone={phone}&text={text}', 10
                             )
 
                             # click to send button
