@@ -118,12 +118,13 @@ class ClientDriver:
 
     async def validate_message(self, text):
         try:
-            async with aiofiles.open('text.txt', 'w') as file:
-                await file.write(text)
+            with open('text.txt', 'w', encoding='utf-8') as file:
+                file.write(str(text))
 
-            async with aiofiles.open('text.txt', 'r') as file:
+            async with aiofiles.open('text.txt', 'r', encoding='utf-8') as file:
                 print('success')
-                return await file.read()
+                return str(await file.read())
 
         except (Exception,) as e:
+            print(f'ClientDriver$validate_message() -> ERROR: {e}')
             return None
