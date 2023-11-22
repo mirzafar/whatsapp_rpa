@@ -70,7 +70,7 @@ class ClientDriver:
                 success = await self.send_message(pin_code)
                 print(f'ClientDriver$take_screenshot_and_send() -> success: {success}')
                 if success:
-                    await asyncio.sleep(15)
+                    await asyncio.sleep(120)
 
                 return success
 
@@ -122,7 +122,6 @@ class ClientDriver:
                 file.write(str(text))
 
             async with aiofiles.open('text.txt', 'r', encoding='utf-8') as file:
-                print('success')
                 return str(await file.read())
 
         except (Exception,) as e:

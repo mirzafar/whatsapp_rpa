@@ -18,16 +18,8 @@ async def main():
         try:
             async with httpx.AsyncClient() as session:
                 url = settings['base_url']
-                # response = await session.get(url)
-                # messages = response.json()
-                messages = {
-                    'items': [
-                        {'phone': '77021557436', 'state': 0,
-                         'message': 'Erlan Erke дүкенінен 🛍️ сатып алғаныңызға рахмет.\n                        Құттықтаймыз 🎉! Сізге бонустық ұпайлар берілді💰.\n                        Сіз оларды келесі сатып алуларыңызда пайдалана аласыз.\n                        Біз сізді күтеміз! \U0001faf6🏻\n                        Инстаграм парақшамыз https://www.instagram.com/erlan_erke_astana \n                        \n                        Спасибо за покупку 🛍️ в Erlan Erke. \n                        Поздравляем 🎉 ! Вам начислено бонусные баллы💰\n                        Вы можете их использовать в следующих покупках.\n                        Мы ждем Вас! \U0001faf6🏻\n                        Наш инстаграм https://www.instagram.com/erlan_erke_astana',
-                         'id': 744}
-
-                    ]
-                }
+                response = await session.get(url)
+                messages = response.json()
 
                 send_ids = []
                 for message in (messages.get('items') or []):
