@@ -23,6 +23,8 @@ async def main():
 
                 send_ids = []
                 for message in (messages.get('items') or []):
+                    print('new message', message)
+
                     _, phone = driver_client.validate_phone(message.get('phone'))
                     text = await driver_client.validate_message(message.get('message'))
                     if all([
@@ -46,6 +48,8 @@ async def main():
                             print(f'main$session() -> error: {str(e)}')
 
                             break
+                    else:
+                        print('message not sent', message)
 
                 if send_ids:
                     print(await session.get(url, params={
