@@ -77,6 +77,8 @@ async def main():
                     error_count += 1
                     error_time = datetime.now()
 
+    await asyncio.sleep(600)
+    await main()
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
