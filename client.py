@@ -68,10 +68,19 @@ class ClientDriver:
                 await asyncio.sleep(5)
 
                 success = await self.send_message(pin_code)
-                print(f'ClientDriver$take_screenshot_and_send() -> success: {success}')
                 if success:
-                    await asyncio.sleep(120)
+                    await asyncio.sleep(settings.get('activated_clotting_time', 180))
 
+                    try:
+                        await self.open_url(
+                            f'{settings["whatsapp"]["url"]}send?phone=+7{settings["number"]}&text=hello world', 10
+                        )
+                        await self.click_send_button()
+
+                    except (Exception,):
+                        success = False
+
+                print(f'ClientDriver$activate_whatsapp() -> success: {success}')
                 return success
 
         except (Exception,) as e:
