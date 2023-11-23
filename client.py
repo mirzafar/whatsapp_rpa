@@ -125,5 +125,4 @@ class ClientDriver:
                 return str(await file.read())
 
         except (Exception,) as e:
-            print(f'ClientDriver$validate_message() -> ERROR: {e}')
-            return None
+            raise Exception(f'ClientDriver$validate_message() -> ERROR: {e}')
