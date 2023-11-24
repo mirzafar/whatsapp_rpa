@@ -59,7 +59,7 @@ async def main():
                     if send_ids:
                         print(await session.get(url, params={
                             'action': 'set_as_sent',
-                            'item_ids': send_ids
+                            'item_ids': ','.join(send_ids)
                         }))
 
             except (Exception,) as e:
