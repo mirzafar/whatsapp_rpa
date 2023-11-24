@@ -45,7 +45,7 @@ async def main():
 
                                 # click to send button
                                 await driver_client.click_send_button()
-                                send_ids.append(message['id'])
+                                send_ids.append(str(message['id']))
 
                             except (Exception,) as e:
                                 error_name = str(e)
