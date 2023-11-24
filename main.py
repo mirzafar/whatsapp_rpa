@@ -66,6 +66,7 @@ async def main():
                 error_name = str(e)
                 flag = False
                 print(f'main() -> error: {str(e)}')
+                await asyncio.sleep(10)
 
             if flag is False:
                 await driver_client.send_message(f'main() -> error: {error_name}')
@@ -75,7 +76,7 @@ async def main():
                     raise ConnectionError()
                 else:
                     flag = True
-                    if error_time and int((datetime.now() - error_time).total_seconds() / 60) > 10:
+                    if error_time and int((datetime.now() - error_time).total_seconds() / 60) > 15:
                         error_count = 0
                     else:
                         error_count += 1
