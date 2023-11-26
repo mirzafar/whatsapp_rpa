@@ -2,11 +2,11 @@ import asyncio
 from typing import Tuple
 
 import aiofiles
-import httpx
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
+from request import request
 from settings import settings
 
 chrome_options = Options()
@@ -101,7 +101,17 @@ class ClientDriver:
         elif number and number.startswith('87') and len(number) == 11:
             return True, f'+7{number[1:]}'
 
-        elif number and number.startswith('+77') and len(number) == 12:
+        elif number and number.startswith('79') and len(number) == 11:
+            return True, f'+{number}'
+
+        elif number and number.startswith('996') and len(number) == 12:
+            return True, f'+{number}'
+
+        elif number and any([
+            number.startswith('+996') and len(number) == 13,
+            number.startswith('+79') and len(number) == 12,
+            number.startswith('+77') and len(number) == 12,
+        ]):
             return True, number
 
         return False, str()
@@ -112,26 +122,24 @@ class ClientDriver:
             'chat_id': settings['tg_id'],
             'text': text,
         }
-        try:
-            async with httpx.AsyncClient() as session:
-                response = await session.post(url, json=payload)
-                response = response.json()
-
-                if response.get('ok') is True:
-                    return True
-
-        except (Exception,) as e:
-            print(f'send_pin_code() -> error: {e}')
+        success, resp = await request(url=url, method='post', json=payload)
+        if success:
+            if resp.get('ok') is True:
+                return True
+        else:
+            print(f'send_pin_code() -> ERROR')
 
         return False
 
-    async def validate_message(self, text):
+    async def validate_message(self, text) -> Tuple[bool, str]:
         try:
             with open('text.txt', 'w', encoding='utf-8') as file:
                 file.write(str(text))
 
             async with aiofiles.open('text.txt', 'r', encoding='utf-8') as file:
-                return str(await file.read())
+                return True, str(await file.read())
 
         except (Exception,) as e:
-            raise Exception(f'ClientDriver$validate_message() -> ERROR: {e}')
+            print(f'ClientDriver$validate_message() -> ERROR: {e}')
+
+        return False, str()
